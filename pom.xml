@@ -21,6 +21,7 @@
     </modules>
     <properties>
         <java.version>11</java.version>
+        <version.easy-random>5.0.0</version.easy-random>
         <version.spring>2.6.1</version.spring>
     </properties>
     <dependencyManagement>
@@ -47,6 +48,12 @@
                 <version>${version.spring}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.jeasy</groupId>
+                <artifactId>easy-random-core</artifactId>
+                <version>${version.easy-random}</version>
+                <scope>test</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
