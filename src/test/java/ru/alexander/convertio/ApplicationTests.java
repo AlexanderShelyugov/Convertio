@@ -1,4 +1,4 @@
-package ru.alexander.testtask.currencyconvertor;
+package ru.alexander.convertio;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
