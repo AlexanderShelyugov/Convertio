@@ -18,6 +18,8 @@
     <modules>
         <module>convertio-web-api</module>
         <module>convertio-main</module>
+        <module>convertio-conversion-provider-api</module>
+        <module>convertio-model</module>
     </modules>
     <properties>
         <java.version>11</java.version>
@@ -34,6 +36,16 @@
             <dependency>
                 <groupId>ru.alexander.convertio</groupId>
                 <artifactId>convertio-web-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ru.alexander.convertio</groupId>
+                <artifactId>convertio-conversion-provider-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ru.alexander.convertio</groupId>
+                <artifactId>convertio-model</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
