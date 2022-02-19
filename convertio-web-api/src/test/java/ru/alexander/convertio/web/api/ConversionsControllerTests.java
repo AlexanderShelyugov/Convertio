@@ -60,7 +60,7 @@ class ConversionsControllerTests {
     }
 
     @Test
-    @DisplayName("Basic conversions endpoint works fine")
+    @DisplayName("Basic conversion works fine")
     void basicConversionsWork() throws Exception {
         val from = randomMoney();
         val to = randomMoney();
@@ -95,7 +95,7 @@ class ConversionsControllerTests {
     }
 
     @Test
-    @DisplayName("Request with unsupported currencies are bad")
+    @DisplayName("Request with unsupported currencies is bad")
     void unsupportedCurrrenciesAreDeclined() throws Exception {
         val from = randomMoney();
         val toCurrency = randomString();
