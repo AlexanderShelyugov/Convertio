@@ -13,6 +13,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import ru.alexander.convertio.conversions.api.ConversionProvider;
+import ru.alexander.convertio.conversions.api.CurrenciesService;
 import ru.alexander.convertio.conversions.api.model.MoneyConversion;
 
 import static java.util.Arrays.asList;
@@ -20,6 +21,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -27,6 +29,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.alexander.convertio.web.api.helper.TestHelper.randomMoney;
+import static ru.alexander.convertio.web.api.helper.TestHelper.randomString;
 
 @WebMvcTest(ConversionsController.class)
 class ConversionsControllerTests {
@@ -41,6 +44,9 @@ class ConversionsControllerTests {
     @MockBean
     private ConversionProvider provider;
 
+    @MockBean
+    private CurrenciesService currenciesService;
+
     @AfterEach
     void checkAfter() {
         verifyNoMoreInteractions(provider);
@@ -49,7 +55,7 @@ class ConversionsControllerTests {
     @Test
     @DisplayName("Context loads successfully!")
     void contextLoads() {
-        asList(mockMvc, mapper, provider)
+        asList(mockMvc, mapper, provider, currenciesService)
             .forEach(o -> assertThat(o, is(notNullValue())));
     }
 
@@ -59,6 +65,10 @@ class ConversionsControllerTests {
         val from = randomMoney();
         val to = randomMoney();
 
+        when(currenciesService.isCurrencySupported(from.getCurrency()))
+            .thenReturn(true);
+        when(currenciesService.isCurrencySupported(to.getCurrency()))
+            .thenReturn(true);
         when(provider.convert(from, to.getCurrency()))
             .thenReturn(
                 MoneyConversion.builder()
@@ -82,6 +92,28 @@ class ConversionsControllerTests {
             .targetAmount(to.getAmount())
             .build();
         assertEquals(expected, actual);
+    }
+
+    @Test
+    @DisplayName("Request with unsupported currencies are bad")
+    void unsupportedCurrrenciesAreDeclined() throws Exception {
+        val from = randomMoney();
+        val toCurrency = randomString();
+
+        when(currenciesService.isCurrencySupported(from.getCurrency()))
+            .thenReturn(false);
+        when(currenciesService.isCurrencySupported(toCurrency))
+            .thenReturn(true);
+        convert(from.getCurrency(), toCurrency, from.getAmount())
+            .andExpect(status().isBadRequest());
+
+        reset(currenciesService);
+        when(currenciesService.isCurrencySupported(from.getCurrency()))
+            .thenReturn(true);
+        when(currenciesService.isCurrencySupported(toCurrency))
+            .thenReturn(false);
+        convert(from.getCurrency(), toCurrency, from.getAmount())
+            .andExpect(status().isBadRequest());
     }
 
     private ResultActions convert(String sCurrency, String tCurrency, double sAmount) throws Exception {
