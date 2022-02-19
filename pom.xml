@@ -20,11 +20,13 @@
         <module>convertio-main</module>
         <module>convertio-conversion-provider-api</module>
         <module>convertio-model</module>
+        <module>convertio-conversion-provider-logic</module>
     </modules>
     <properties>
         <java.version>11</java.version>
         <version.easy-random>5.0.0</version.easy-random>
         <version.spring>2.6.1</version.spring>
+        <version.validator>7.0.2.Final</version.validator>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -42,6 +44,11 @@
                 <groupId>ru.alexander.convertio</groupId>
                 <artifactId>convertio-conversion-provider-api</artifactId>
                 <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ru.alexander.convertio</groupId>
+                <artifactId>convertio-conversion-provider-logic</artifactId>
+                <version>1.0.0-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>ru.alexander.convertio</groupId>

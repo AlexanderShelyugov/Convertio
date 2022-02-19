@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.NonNull;
 import lombok.val;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.notNull;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
@@ -28,6 +31,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static ru.alexander.convertio.web.api.helper.TestHelper.randomAmount;
 import static ru.alexander.convertio.web.api.helper.TestHelper.randomMoney;
 import static ru.alexander.convertio.web.api.helper.TestHelper.randomString;
 
@@ -47,6 +51,12 @@ class ConversionsControllerTests {
     @MockBean
     private CurrenciesService currenciesService;
 
+    @BeforeEach
+    void prepare() {
+        when(currenciesService.isCurrencySupported(notNull()))
+            .thenReturn(true);
+    }
+
     @AfterEach
     void checkAfter() {
         verifyNoMoreInteractions(provider);
@@ -65,10 +75,6 @@ class ConversionsControllerTests {
         val from = randomMoney();
         val to = randomMoney();
 
-        when(currenciesService.isCurrencySupported(from.getCurrency()))
-            .thenReturn(true);
-        when(currenciesService.isCurrencySupported(to.getCurrency()))
-            .thenReturn(true);
         when(provider.convert(from, to.getCurrency()))
             .thenReturn(
                 MoneyConversion.builder()
@@ -116,7 +122,17 @@ class ConversionsControllerTests {
             .andExpect(status().isBadRequest());
     }
 
+    @Test
+    @DisplayName("Requests with negative amount are bad")
+    void negativeAmountIsDeclined() throws Exception {
+        val amount = -1 * randomAmount();
+        assertTrue(amount < 0);
+        convert(randomString(), randomString(), amount)
+            .andExpect(status().isBadRequest());
+    }
+
     private ResultActions convert(String sCurrency, String tCurrency, double sAmount) throws Exception {
+        mockMvc.getDispatcherServlet().setThrowExceptionIfNoHandlerFound(false);
         return mockMvc.perform(
             get(conversionURI(sCurrency, tCurrency, sAmount))
                 .accept(APPLICATION_JSON)
