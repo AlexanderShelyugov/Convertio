@@ -39,8 +39,8 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.jeasy</groupId>
-            <artifactId>easy-random-core</artifactId>
+            <groupId>ru.alexander.convertio</groupId>
+            <artifactId>convertio-test-utils</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>

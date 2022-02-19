@@ -1,4 +1,4 @@
-package ru.alexander.convertio.web.api.helper;
+package ru.alexander.convertio.test.helper;
 
 import org.jeasy.random.EasyRandom;
 import ru.alexander.convertio.model.Money;

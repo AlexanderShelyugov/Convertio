@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>convertio-conversion-provider-logic</artifactId>
+    <artifactId>convertio-test-utils</artifactId>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
@@ -19,22 +19,11 @@
     <dependencies>
         <dependency>
             <groupId>ru.alexander.convertio</groupId>
-            <artifactId>convertio-conversion-provider-api</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <artifactId>convertio-model</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
+            <groupId>org.jeasy</groupId>
+            <artifactId>easy-random-core</artifactId>
         </dependency>
     </dependencies>
 

@@ -21,6 +21,7 @@
         <module>convertio-conversion-provider-api</module>
         <module>convertio-model</module>
         <module>convertio-conversion-provider-logic</module>
+        <module>convertio-test-utils</module>
     </modules>
     <properties>
         <java.version>11</java.version>
@@ -56,6 +57,11 @@
                 <version>${project.version}</version>
             </dependency>
             <dependency>
+                <groupId>ru.alexander.convertio</groupId>
+                <artifactId>convertio-test-utils</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
                 <version>1.18.22</version>
@@ -72,7 +78,6 @@
                 <groupId>org.jeasy</groupId>
                 <artifactId>easy-random-core</artifactId>
                 <version>${version.easy-random}</version>
-                <scope>test</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>

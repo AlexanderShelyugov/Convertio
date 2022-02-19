@@ -29,9 +29,9 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static ru.alexander.convertio.web.api.helper.TestHelper.randomAmount;
-import static ru.alexander.convertio.web.api.helper.TestHelper.randomMoney;
-import static ru.alexander.convertio.web.api.helper.TestHelper.randomString;
+import static ru.alexander.convertio.test.helper.TestHelper.randomAmount;
+import static ru.alexander.convertio.test.helper.TestHelper.randomMoney;
+import static ru.alexander.convertio.test.helper.TestHelper.randomString;
 
 @WebMvcTest(ConversionsController.class)
 class ConversionsControllerTests {
