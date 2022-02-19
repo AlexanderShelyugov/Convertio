@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.alexander.convertio.conversions.api.ConversionProvider;
 import ru.alexander.convertio.conversions.api.CurrenciesService;
+import ru.alexander.convertio.model.Money;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
@@ -41,11 +42,15 @@ class ConversionsController {
         if (Objects.nonNull(validationResult)) {
             return validationResult;
         }
+        val conversion = conversionProvider.convert(
+            Money.builder().currency(sourceCurrency).amount(sourceAmount).build(),
+            targetCurrency
+        );
         val result = ConversionResult.builder()
-            .sourceCurrency(sourceCurrency)
-            .sourceAmount(sourceAmount)
-            .targetCurrency(targetCurrency)
-            .targetAmount(42.0)
+            .sourceCurrency(conversion.getFrom().getCurrency())
+            .sourceAmount(conversion.getFrom().getAmount())
+            .targetCurrency(conversion.getTo().getCurrency())
+            .targetAmount(conversion.getTo().getAmount())
             .build();
         return ok().body(result);
     }

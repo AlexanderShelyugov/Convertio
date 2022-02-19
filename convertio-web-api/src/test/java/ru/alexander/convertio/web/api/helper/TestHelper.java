@@ -8,10 +8,7 @@ public final class TestHelper {
     public static final EasyRandom RANDOM = new EasyRandom();
 
     public static Money randomMoney() {
-        return Money.builder()
-            .currency(randomString())
-            .amount(randomAmount())
-            .build();
+        return RANDOM.nextObject(Money.class);
     }
 
     public static String randomString() {
@@ -19,8 +16,7 @@ public final class TestHelper {
     }
 
     public static Double randomAmount() {
-        return 42.0;
-//        return RANDOM.nextDouble() * Double.MAX_VALUE;
+        return RANDOM.nextDouble() * Double.MAX_VALUE;
     }
 
     private TestHelper() {
