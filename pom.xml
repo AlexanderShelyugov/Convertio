@@ -22,6 +22,7 @@
         <module>convertio-model</module>
         <module>convertio-conversion-provider-logic</module>
         <module>convertio-test-utils</module>
+        <module>convertio-conversion-source-api</module>
     </modules>
     <properties>
         <java.version>11</java.version>
