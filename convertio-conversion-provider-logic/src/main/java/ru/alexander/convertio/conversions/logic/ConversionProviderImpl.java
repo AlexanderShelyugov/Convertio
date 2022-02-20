@@ -38,7 +38,6 @@ class ConversionProviderImpl implements ConversionProvider {
             val json = ofNullable(response.getBody())
                 .map(content -> {
                     try {
-                        System.out.println(content);
                         return mapper.readTree(content);
                     } catch (JsonProcessingException e) {
                         throw new RuntimeException(e);

@@ -7,5 +7,5 @@ import lombok.Value;
 @Value
 public class Money {
     String currency;
-    Double amount;
+    Number amount;
 }

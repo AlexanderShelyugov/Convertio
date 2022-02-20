@@ -86,9 +86,9 @@ class ConversionsControllerTests {
 
         val expected = ConversionResult.builder()
             .sourceCurrency(from.getCurrency())
-            .sourceAmount(from.getAmount())
+            .sourceAmount(from.getAmount().doubleValue())
             .targetCurrency(to.getCurrency())
-            .targetAmount(to.getAmount())
+            .targetAmount(to.getAmount().doubleValue())
             .build();
         assertEquals(expected, actual);
     }
@@ -124,7 +124,7 @@ class ConversionsControllerTests {
             .andExpect(status().isBadRequest());
     }
 
-    private ResultActions convert(String sCurrency, String tCurrency, double sAmount) throws Exception {
+    private ResultActions convert(String sCurrency, String tCurrency, Number sAmount) throws Exception {
         mockMvc.getDispatcherServlet().setThrowExceptionIfNoHandlerFound(false);
         return mockMvc.perform(
             get(conversionURI(sCurrency, tCurrency, sAmount))
@@ -139,7 +139,7 @@ class ConversionsControllerTests {
         );
     }
 
-    private static String conversionURI(String sCurrency, String tCurrency, double sAmount) {
+    private static String conversionURI(String sCurrency, String tCurrency, Number sAmount) {
         return String.join("/", ENDPOINT, sCurrency, tCurrency, String.valueOf(sAmount));
     }
 

@@ -56,9 +56,9 @@ class ConversionsController {
         }
         val result = ConversionResult.builder()
             .sourceCurrency(conversion.getFrom().getCurrency())
-            .sourceAmount(conversion.getFrom().getAmount())
+            .sourceAmount(conversion.getFrom().getAmount().doubleValue())
             .targetCurrency(conversion.getTo().getCurrency())
-            .targetAmount(conversion.getTo().getAmount())
+            .targetAmount(conversion.getTo().getAmount().doubleValue())
             .build();
         return ok().body(result);
     }
