@@ -8,8 +8,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import ru.alexander.convertio.conversions.api.ConversionFailedException;
 import ru.alexander.convertio.conversions.api.ConversionProvider;
 import ru.alexander.convertio.conversions.api.CurrenciesService;
+import ru.alexander.convertio.conversions.api.model.MoneyConversion;
 import ru.alexander.convertio.model.Money;
 
 import javax.validation.constraints.Min;
@@ -19,6 +21,7 @@ import java.util.Objects;
 import static java.util.Optional.ofNullable;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.ResponseEntity.badRequest;
+import static org.springframework.http.ResponseEntity.internalServerError;
 import static org.springframework.http.ResponseEntity.ok;
 
 @RestController
@@ -32,7 +35,7 @@ class ConversionsController {
     private final ConversionProvider conversionProvider;
 
     @GetMapping("/{from}/{to}/{amount}")
-    ResponseEntity<ConversionResult> convert(
+    ResponseEntity<?> convert(
         @PathVariable("from") @NotBlank String sourceCurrency,
         @PathVariable("to") @NotBlank String targetCurrency,
         @PathVariable("amount") @Min(0) Double sourceAmount
@@ -42,10 +45,15 @@ class ConversionsController {
         if (Objects.nonNull(validationResult)) {
             return validationResult;
         }
-        val conversion = conversionProvider.convert(
-            Money.builder().currency(sourceCurrency).amount(sourceAmount).build(),
-            targetCurrency
-        );
+        MoneyConversion conversion;
+        try {
+            conversion = conversionProvider.convert(
+                Money.builder().currency(sourceCurrency).amount(sourceAmount).build(),
+                targetCurrency
+            );
+        } catch (ConversionFailedException e) {
+            return internalServerError().body(e.getMessage());
+        }
         val result = ConversionResult.builder()
             .sourceCurrency(conversion.getFrom().getCurrency())
             .sourceAmount(conversion.getFrom().getAmount())

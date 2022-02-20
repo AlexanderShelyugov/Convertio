@@ -86,8 +86,8 @@ class ConversionProviderImplTest {
             .from(from)
             .to(to)
             .build();
-        http.verify();
         val actual = provider.convert(from, to.getCurrency());
+        http.verify();
         assertEquals(expected, actual);
     }
 
