@@ -15,8 +15,7 @@ jobs:
           echo ${{ secrets.EXCHANGE_RATES_API_KEY }} > $API_KEY
           git config user.name "GitHub Actions Bot"
           git config user.email "<>"
-          rm .gitignore
-          git add $API_KEY
+          git add -f $API_KEY
           git commit -m "Secrets applied"
       - name: Deploy to Heroku
         uses: akhileshns/heroku-deploy@v3.12.12
