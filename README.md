@@ -5,6 +5,10 @@ Web service that uses [exchangeratesapi.io](https://exchangeratesapi.io) to conv
 ## Usage
 Visit [documentation page](https://alexander-shelyugov-convertio.herokuapp.com/docs) to look at possible endpoints.
 
+All supported currencies are listed [here](https://alexander-shelyugov-convertio.herokuapp.com/currencies).
+
+Check ones that you need and call [/conversions/{from}/{to}/{amount}](https://alexander-shelyugov-convertio.herokuapp.com/conversions/USD/EUR/100).
+
 You can also use available [actuators](https://alexander-shelyugov-convertio.herokuapp.com/actuator).
 
 ## Health
@@ -18,7 +22,7 @@ You can also use available [actuators](https://alexander-shelyugov-convertio.her
 Just build it as a maven project
 
 ```shell
-mvn clean install
+mvn clean package
 ```
 
 ### Docker

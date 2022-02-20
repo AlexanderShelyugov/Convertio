@@ -29,3 +29,4 @@ jobs:
           heroku_email: ${{ secrets.HEROKU_EMAIL }}
           branch: main
           usedocker: false
+          healthcheck: https://alexander-shelyugov-convertio.herokuapp.com/actuator/health
