@@ -1,5 +1,11 @@
 package ru.alexander.convertio.web.api;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.springframework.http.ResponseEntity;
@@ -34,10 +40,24 @@ class ConversionsController {
     private final CurrenciesService currenciesService;
     private final ConversionProvider conversionProvider;
 
+    @Operation(summary = "Convert money to required currency")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Conversion successful",
+            content = {@Content(mediaType = APPLICATION_JSON_VALUE,
+                schema = @Schema(implementation = ConversionResult.class))}
+        ),
+        @ApiResponse(responseCode = "400", description = "Incorrect currencies or negative money amount",
+            content = @Content),
+        @ApiResponse(responseCode = "404", description = "Conversion not found",
+            content = @Content)
+    })
     @GetMapping("/{from}/{to}/{amount}")
     ResponseEntity<?> convert(
+        @Parameter(description = "Source currency", required = true, example = "USD")
         @PathVariable("from") @NotBlank String sourceCurrency,
+        @Parameter(description = "Target currency", required = true, example = "EUR")
         @PathVariable("to") @NotBlank String targetCurrency,
+        @Parameter(description = "Given amount of money", required = true, example = "100")
         @PathVariable("amount") @Min(0) Double sourceAmount
     ) {
         val validationResult = ofNullable(checkCurrency(sourceCurrency))
