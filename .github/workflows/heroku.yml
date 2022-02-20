@@ -11,6 +11,7 @@ jobs:
         uses: actions/checkout@v2
       - name: Init secrets
         run: |
+          git checkout -b heroku
           API_KEY=convertio-conversion-source-exchangeratesapi/src/main/resources/api.key
           echo ${{ secrets.EXCHANGE_RATES_API_KEY }} > $API_KEY
           git config user.name "GitHub Actions Bot"
