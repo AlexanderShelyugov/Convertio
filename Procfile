@@ -1,1 +1,1 @@
-web: java -jar convertio.jar
+web: java -jar convertio-main/target/convertio.jar
