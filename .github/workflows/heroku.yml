@@ -27,5 +27,4 @@ jobs:
           branch: heroku
           usedocker: false
           dontautocreate: true
-          dontuseforce: true
           healthcheck: https://alexander-shelyugov-convertio.herokuapp.com/actuator/health
