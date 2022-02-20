@@ -1,7 +1,14 @@
 package ru.alexander.convertio.test.helper;
 
+import lombok.NonNull;
+import lombok.val;
 import org.jeasy.random.EasyRandom;
 import ru.alexander.convertio.model.Money;
+
+import java.util.Collection;
+
+import static java.util.stream.Collectors.toSet;
+import static java.util.stream.Stream.generate;
 
 public final class TestHelper {
 
@@ -12,6 +19,22 @@ public final class TestHelper {
             .currency(randomString())
             .amount(randomAmount())
             .build();
+    }
+
+    public static Collection<String> randomCurrencies() {
+        return generate(TestHelper::randomCurrency)
+            .limit(12)
+            .collect(toSet());
+    }
+
+    public static Collection<String> randomCurrencies(@NonNull String includingThis) {
+        val currencies = randomCurrencies();
+        currencies.add(includingThis);
+        return currencies;
+    }
+
+    public static String randomCurrency() {
+        return randomString();
     }
 
     public static String randomString() {

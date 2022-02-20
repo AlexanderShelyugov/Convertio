@@ -21,7 +21,10 @@
             <groupId>ru.alexander.convertio</groupId>
             <artifactId>convertio-conversion-provider-api</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>ru.alexander.convertio</groupId>
+            <artifactId>convertio-conversion-source-api</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>

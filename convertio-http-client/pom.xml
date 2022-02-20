@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>convertio-conversion-source-exchangeratesapi</artifactId>
+    <artifactId>convertio-http-client</artifactId>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
@@ -18,14 +18,6 @@
 
     <dependencies>
         <dependency>
-            <groupId>ru.alexander.convertio</groupId>
-            <artifactId>convertio-conversion-source-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>ru.alexander.convertio</groupId>
-            <artifactId>convertio-http-client</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
@@ -33,11 +25,6 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>ru.alexander.convertio</groupId>
-            <artifactId>convertio-test-utils</artifactId>
-            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

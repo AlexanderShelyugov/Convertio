@@ -1,11 +1,11 @@
-package ru.alexander.convertio.conversions.logic;
+package ru.alexander.convertio.conversions.source.exchangeratesapi;
 
 import lombok.SneakyThrows;
 import lombok.val;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ResourceUtils;
 
 import static java.nio.file.Files.readString;
-import static org.springframework.util.ResourceUtils.getFile;
 
 @Service
 public class ApiKeyVault {
@@ -13,7 +13,7 @@ public class ApiKeyVault {
 
     @SneakyThrows
     public String getApiKey() {
-        val file = getFile("classpath:" + API_KEY_LOCATION);
+        val file = ResourceUtils.getFile("classpath:" + API_KEY_LOCATION);
         return readString(file.toPath());
     }
 }
