@@ -1,12 +1,9 @@
-FROM alpine/git AS repository
+FROM maven:3.8.4-openjdk-11-slim AS build
 WORKDIR /convertio
-RUN git clone https://github.com/AlexanderShelyugov/JavaCurrencyConvertor.git
-
-FROM maven:jdk11 AS build
-WORKDIR /convertio
-COPY --from=repository /convertio/pom.xml ./pom.xml
-COPY --from=repository /convertio/convertio-* ./
-RUN mvn install
+COPY . ./
+RUN ls -l ./convertio-conversion-provider-logic/src
+RUN mvn dependency:resolve
+RUN mvn clean install
 
 FROM adoptopenjdk/openjdk11:alpine-jre
 WORKDIR /convertio

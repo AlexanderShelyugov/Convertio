@@ -12,6 +12,11 @@ Just build it as a maven project
 mvn clean install
 ```
 
+### Docker
+```shell
+docker build -t convertio .
+```
+
 ## Usage
 Visit [documentation page](/docs) to look at possible endpoints.
 
