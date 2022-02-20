@@ -1,8 +1,8 @@
-FROM maven:3.8.4-openjdk-11-slim AS build
+FROM maven:3-openjdk-11 AS build
 WORKDIR /convertio
 COPY . ./
 RUN mvn dependency:resolve
-RUN mvn clean install
+RUN mvn clean package
 
 FROM adoptopenjdk/openjdk11:alpine-jre
 WORKDIR /convertio
