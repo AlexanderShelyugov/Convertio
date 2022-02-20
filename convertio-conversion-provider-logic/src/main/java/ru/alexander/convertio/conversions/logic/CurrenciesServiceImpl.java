@@ -8,16 +8,41 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import ru.alexander.convertio.conversions.api.CurrenciesService;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.LinkedList;
+
+import static java.util.Optional.ofNullable;
+
 @Service
 @RequiredArgsConstructor
 class CurrenciesServiceImpl implements CurrenciesService {
+    private static final String MSG_CURRENCY_CHECK_HTTP_ERROR = "Currency check failed. " +
+        "We've received code %s from conversion web service";
+
     private final RestTemplate http;
     private final ApiKeyVault apiKey;
 
     @Override
     public boolean isCurrencySupported(String currency) {
         val response = http.getForEntity(supportedCurrenciesUrl(), JsonNode.class);
-        return true;
+        if (!response.getStatusCode().is2xxSuccessful()) {
+            val msg = String.format(MSG_CURRENCY_CHECK_HTTP_ERROR, response.getStatusCodeValue());
+            throw new RuntimeException(msg);
+        }
+
+        val supportedCurrencies = ofNullable(response.getBody())
+            .map(node -> node.get("symbols"))
+            .map(JsonNode::fieldNames)
+            .map(currencies -> {
+                val list = new LinkedList<String>();
+                currencies.forEachRemaining(list::add);
+                return (Collection<String>) new HashSet<>(list);
+            })
+            .orElseGet(Collections::emptySet);
+
+        return supportedCurrencies.contains(currency);
     }
 
     private String supportedCurrenciesUrl() {

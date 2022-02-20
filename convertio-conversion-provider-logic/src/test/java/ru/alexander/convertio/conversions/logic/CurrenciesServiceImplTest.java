@@ -1,6 +1,5 @@
 package ru.alexander.convertio.conversions.logic;
 
-import lombok.NonNull;
 import lombok.val;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -88,6 +87,31 @@ class CurrenciesServiceImplTest {
         assertEquals(expected, actual);
     }
 
+    @Test
+    @DisplayName("Not supported currency works as expected")
+    void unknownCurrencyCheckWorks() throws Exception {
+        val currency = randomString();
+        val apiKey = randomString();
+        when(apiKeyVault.getApiKey())
+            .thenReturn(apiKey);
+
+        http.expect(
+                once(), requestTo(supportedCurrenciesUrl(apiKey))
+            )
+            .andExpect(method(GET))
+            .andRespond(
+                withStatus(OK)
+                    .contentType(APPLICATION_JSON)
+                    .body(randomCurrenciesResponse(null))
+            );
+
+        val expected = false;
+        val actual = service.isCurrencySupported(currency);
+        http.verify();
+        assertEquals(expected, actual);
+    }
+
+
     private String supportedCurrenciesUrl(String apiKey) {
         return UriComponentsBuilder.newInstance()
             .scheme("http")
@@ -98,11 +122,13 @@ class CurrenciesServiceImplTest {
             .toUriString();
     }
 
-    private static String randomCurrenciesResponse(@NonNull String includingThis) throws JSONException {
+    private static String randomCurrenciesResponse(String includingThis) throws JSONException {
         val currencies = generate(TestHelper::randomString)
             .limit(12)
             .collect(toSet());
-        currencies.add(includingThis);
+        if (includingThis != null) {
+            currencies.add(includingThis);
+        }
 
         val symbols = currencies.stream()
             .collect(toMap(identity(), currency -> "Description of " + currency));
