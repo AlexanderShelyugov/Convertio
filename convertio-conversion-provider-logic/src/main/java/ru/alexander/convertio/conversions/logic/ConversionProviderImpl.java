@@ -17,6 +17,9 @@ import static java.util.Optional.ofNullable;
 @Service
 @RequiredArgsConstructor
 class ConversionProviderImpl implements ConversionProvider {
+    private static final String MSG_CONVERSION_HTTP_ERROR = "Conversion failed. " +
+        "We've received code %s from conversion web service";
+
     private final ApiKeyVault apiKeyVault;
     private final RestTemplate http;
     private final ObjectMapper mapper;
@@ -25,10 +28,10 @@ class ConversionProviderImpl implements ConversionProvider {
     public MoneyConversion convert(Money source, String targetCurrency)
         throws ConversionFailedException {
         val url = conversionUrl(apiKeyVault.getApiKey(), source, targetCurrency);
-        System.out.println(url);
         val response = http.getForEntity(url, String.class);
         if (!response.getStatusCode().is2xxSuccessful()) {
-            throw new ConversionFailedException("Conversion failed");
+            val msg = String.format(MSG_CONVERSION_HTTP_ERROR, response.getStatusCodeValue());
+            throw new ConversionFailedException(msg);
         }
         Money target;
         try {
@@ -42,11 +45,9 @@ class ConversionProviderImpl implements ConversionProvider {
                     }
                 })
                 .orElseThrow(() -> new Exception("Failed to retrieve conversion"));
-            val targetCurrStr = json.get("query").get("to").textValue();
-            val targetAmountStr = json.get("result").doubleValue();
             target = Money.builder()
-                .currency(targetCurrStr)
-                .amount(targetAmountStr)
+                .currency(json.get("query").get("to").textValue())
+                .amount(json.get("result").doubleValue())
                 .build();
         } catch (Exception e) {
             throw new ConversionFailedException(e);
