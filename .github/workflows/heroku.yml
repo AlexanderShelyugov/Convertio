@@ -15,7 +15,7 @@ jobs:
           API_KEY=convertio-conversion-source-exchangeratesapi/src/main/resources/api.key
           echo ${{ secrets.EXCHANGE_RATES_API_KEY }} > $API_KEY
           echo Yes, this is our api key
-          cat $API_KEY
+          cat $API_KEY/.gitignore
           git config user.name "GitHub Actions Bot"
           git config user.email "<>"
           git add -f $API_KEY
