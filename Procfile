@@ -1,1 +1,1 @@
-web: java -jar convertio-main/target/convertio.jar
+web: java $JAVA_OPTS -Dserver.port=$PORT -jar convertio-main/target/convertio.jar
