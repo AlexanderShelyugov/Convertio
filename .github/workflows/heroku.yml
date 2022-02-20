@@ -24,4 +24,6 @@ jobs:
           heroku_app_name: ${{ secrets.HEROKU_APP_NAME }}
           heroku_email: ${{ secrets.HEROKU_EMAIL }}
           usedocker: false
+          dontautocreate: true
+          dontuseforce: true
           healthcheck: https://alexander-shelyugov-convertio.herokuapp.com/actuator/health
