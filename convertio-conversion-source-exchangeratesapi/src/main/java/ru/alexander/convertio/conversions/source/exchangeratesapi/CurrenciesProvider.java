@@ -10,9 +10,10 @@ import ru.alexander.convertio.conversions.source.api.CurrenciesSource;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
-import java.util.LinkedList;
+import java.util.HashMap;
+import java.util.Map;
 
+import static java.util.Collections.unmodifiableMap;
 import static java.util.Optional.ofNullable;
 
 @Service
@@ -26,6 +27,11 @@ class CurrenciesProvider implements CurrenciesSource {
 
     @Override
     public Collection<String> supportedCurrencies() {
+        return currenciesWithDescription().keySet();
+    }
+
+    @Override
+    public Map<String, String> currenciesWithDescription() {
         val response = http.getForEntity(supportedCurrenciesUrl(), JsonNode.class);
         if (!response.getStatusCode().is2xxSuccessful()) {
             val msg = String.format(MSG_CURRENCY_CHECK_HTTP_ERROR, response.getStatusCodeValue());
@@ -34,14 +40,15 @@ class CurrenciesProvider implements CurrenciesSource {
 
         val supportedCurrencies = ofNullable(response.getBody())
             .map(node -> node.get("symbols"))
-            .map(JsonNode::fieldNames)
-            .map(currencies -> {
-                val list = new LinkedList<String>();
-                currencies.forEachRemaining(list::add);
-                return (Collection<String>) new HashSet<>(list);
+            .map(node -> {
+                val currencies = new HashMap<String, String>();
+                node.fields().forEachRemaining(
+                    field -> currencies.put(field.getKey(), field.getValue().textValue())
+                );
+                return (Map<String, String>) currencies;
             })
-            .orElseGet(Collections::emptySet);
-        return supportedCurrencies;
+            .orElseGet(Collections::emptyMap);
+        return unmodifiableMap(supportedCurrencies);
     }
 
     private String supportedCurrenciesUrl() {

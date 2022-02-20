@@ -1,5 +1,6 @@
 package ru.alexander.convertio.conversions.source.exchangeratesapi;
 
+import lombok.NonNull;
 import lombok.val;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -16,11 +17,9 @@ import org.springframework.web.util.UriComponentsBuilder;
 import ru.alexander.convertio.conversions.source.api.CurrenciesSource;
 import ru.alexander.convertio.http.client.HttpClientConfiguration;
 
-import java.util.Collection;
+import java.util.Map;
 
 import static java.util.Arrays.asList;
-import static java.util.function.Function.identity;
-import static java.util.stream.Collectors.toMap;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
@@ -34,7 +33,7 @@ import static org.springframework.test.web.client.MockRestServiceServer.createSe
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withStatus;
-import static ru.alexander.convertio.test.helper.TestHelper.randomCurrencies;
+import static ru.alexander.convertio.test.helper.TestHelper.randomCurrenciesWithDescriptions;
 import static ru.alexander.convertio.test.helper.TestHelper.randomString;
 
 @SpringBootTest(classes = {CurrenciesProvider.class})
@@ -69,7 +68,29 @@ class CurrenciesProviderTest {
         val apiKey = randomString();
         when(apiKeyVault.getApiKey())
             .thenReturn(apiKey);
-        val expected = randomCurrencies();
+        val currenciesWithDescriptions = randomCurrenciesWithDescriptions();
+        val expected = currenciesWithDescriptions.keySet();
+        http.expect(
+                once(), requestTo(supportedCurrenciesUrl(apiKey))
+            )
+            .andExpect(method(GET))
+            .andRespond(
+                withStatus(OK)
+                    .contentType(APPLICATION_JSON)
+                    .body(currenciesResponse(currenciesWithDescriptions))
+            );
+        val actual = service.supportedCurrencies();
+        http.verify();
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    @DisplayName("Currencies with descriptions works fine")
+    void testGetCurrenciesWithDescriptionWorks() throws Exception {
+        val apiKey = randomString();
+        when(apiKeyVault.getApiKey())
+            .thenReturn(apiKey);
+        val expected = randomCurrenciesWithDescriptions();
         http.expect(
                 once(), requestTo(supportedCurrenciesUrl(apiKey))
             )
@@ -79,7 +100,7 @@ class CurrenciesProviderTest {
                     .contentType(APPLICATION_JSON)
                     .body(currenciesResponse(expected))
             );
-        val actual = service.supportedCurrencies();
+        val actual = service.currenciesWithDescription();
         http.verify();
         assertEquals(expected, actual);
     }
@@ -94,13 +115,11 @@ class CurrenciesProviderTest {
             .toUriString();
     }
 
-    private static String currenciesResponse(Collection<String> currencies) throws JSONException {
-        val symbols = currencies.stream()
-            .collect(toMap(identity(), currency -> "Description of " + currency));
+    private static String currenciesResponse(@NonNull Map<String, String> currencies)
+        throws JSONException {
         val json = new JSONObject()
             .put("success", true)
-            .put("symbols", new JSONObject(symbols));
+            .put("symbols", new JSONObject(currencies));
         return json.toString();
     }
-
 }

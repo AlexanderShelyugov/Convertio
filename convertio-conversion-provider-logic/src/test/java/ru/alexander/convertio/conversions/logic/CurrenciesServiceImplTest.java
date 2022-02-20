@@ -16,6 +16,7 @@ import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 import static ru.alexander.convertio.test.helper.TestHelper.randomCurrencies;
+import static ru.alexander.convertio.test.helper.TestHelper.randomCurrenciesWithDescriptions;
 import static ru.alexander.convertio.test.helper.TestHelper.randomCurrency;
 
 @SpringBootTest(classes = {CurrenciesServiceImpl.class})
@@ -54,6 +55,17 @@ class CurrenciesServiceImplTest {
 
         val expected = false;
         val actual = service.isCurrencySupported(currency);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    @DisplayName("Currencies with description works fine")
+    void testCurrenciesWithDescriptions() {
+        val expected = randomCurrenciesWithDescriptions();
+        when(currenciesSource.currenciesWithDescription())
+            .thenReturn(expected);
+        val actual = service.getAllSupportedCurrencies();
+        assertThat(actual, is(notNullValue()));
         assertEquals(expected, actual);
     }
 }

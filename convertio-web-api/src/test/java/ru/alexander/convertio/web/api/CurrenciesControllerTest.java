@@ -17,8 +17,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static java.util.Arrays.asList;
-import static java.util.function.Function.identity;
-import static java.util.stream.Collectors.toMap;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
@@ -28,7 +26,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static ru.alexander.convertio.test.helper.TestHelper.randomCurrencies;
+import static ru.alexander.convertio.test.helper.TestHelper.randomCurrenciesWithDescriptions;
 
 @WebMvcTest(CurrenciesController.class)
 class CurrenciesControllerTest {
@@ -53,9 +51,7 @@ class CurrenciesControllerTest {
     @Test
     @DisplayName("Supported currencies are displayed")
     void getSupportedCurrencies() throws Exception {
-        val expected = randomCurrencies()
-            .stream()
-            .collect(toMap(identity(), currency -> "Description of " + currency));
+        val expected = randomCurrenciesWithDescriptions();
         when(currenciesService.getAllSupportedCurrencies())
             .thenReturn(expected);
 
