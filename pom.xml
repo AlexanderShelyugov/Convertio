@@ -29,6 +29,7 @@
     <properties>
         <java.version>11</java.version>
         <version.easy-random>5.0.0</version.easy-random>
+        <version.lombok>1.18.22</version.lombok>
         <version.spring>2.6.1</version.spring>
         <version.validator>7.0.2.Final</version.validator>
     </properties>
@@ -52,22 +53,22 @@
             <dependency>
                 <groupId>ru.alexander.convertio</groupId>
                 <artifactId>convertio-conversion-provider-logic</artifactId>
-                <version>1.0.0-SNAPSHOT</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>ru.alexander.convertio</groupId>
                 <artifactId>convertio-conversion-source-api</artifactId>
-                <version>1.0.0-SNAPSHOT</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>ru.alexander.convertio</groupId>
                 <artifactId>convertio-conversion-source-exchangeratesapi</artifactId>
-                <version>1.0.0-SNAPSHOT</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>ru.alexander.convertio</groupId>
                 <artifactId>convertio-http-client</artifactId>
-                <version>1.0.0-SNAPSHOT</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>ru.alexander.convertio</groupId>
@@ -82,7 +83,7 @@
             <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
-                <version>1.18.22</version>
+                <version>${version.lombok}</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
