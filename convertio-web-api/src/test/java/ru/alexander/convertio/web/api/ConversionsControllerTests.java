@@ -120,9 +120,24 @@ class ConversionsControllerTests {
     void negativeAmountIsDeclined() throws Exception {
         val amount = -1 * randomAmount();
         assertTrue(amount < 0);
-        convert(randomString(), randomString(), amount)
-            .andExpect(status().isBadRequest());
+        expectBadRequest(randomString(), randomString(), amount);
     }
+
+    @Test
+    @DisplayName("Requests with blank currencies are bad")
+    void blankCurrenciesAreDeclined() throws Exception {
+        val amount = randomAmount();
+        val normalCurrency = randomString();
+        val blankCurrencies = asList(null, "    ");
+        for (val blankCurrency : blankCurrencies) {
+            expectBadRequest(blankCurrency, normalCurrency, amount);
+            expectBadRequest(normalCurrency, blankCurrency, amount);
+        }
+        expectNotFound("", normalCurrency, amount);
+        expectNotFound(normalCurrency, "", amount);
+    }
+
+    ///// Sugar to get rid of boilerplate above
 
     private ResultActions convert(String sCurrency, String tCurrency, Number sAmount) throws Exception {
         mockMvc.getDispatcherServlet().setThrowExceptionIfNoHandlerFound(false);
@@ -133,10 +148,15 @@ class ConversionsControllerTests {
     }
 
     private ConversionResult extractFrom(@NonNull MvcResult r) throws Exception {
-        return mapper.readValue(
-            r.getResponse().getContentAsString(),
-            ConversionResult.class
-        );
+        return mapper.readValue(r.getResponse().getContentAsString(), ConversionResult.class);
+    }
+
+    private void expectBadRequest(String a, String b, Number amount) throws Exception {
+        convert(a, b, amount).andExpect(status().isBadRequest());
+    }
+
+    private void expectNotFound(String a, String b, Number amount) throws Exception {
+        convert(a, b, amount).andExpect(status().isNotFound());
     }
 
     private static String conversionURI(String sCurrency, String tCurrency, Number sAmount) {

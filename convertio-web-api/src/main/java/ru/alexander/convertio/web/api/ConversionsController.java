@@ -65,6 +65,9 @@ class ConversionsController {
 
     private ResponseEntity<ConversionResult> checkCurrency(String currency) {
         // TODO replace with custom validator.
+        if (currency.equalsIgnoreCase("null")) {
+            return badRequest().build();
+        }
         if (currenciesService.isCurrencySupported(currency)) {
             return null;
         }
