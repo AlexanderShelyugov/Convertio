@@ -9,12 +9,12 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import ru.alexander.convertio.conversions.api.CurrenciesService;
 import ru.alexander.convertio.conversions.source.api.CurrenciesSource;
 
-import static java.util.Arrays.asList;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
+import static ru.alexander.convertio.test.helper.TestHelper.checkNotNull;
 import static ru.alexander.convertio.test.helper.TestHelper.randomCurrencies;
 import static ru.alexander.convertio.test.helper.TestHelper.randomCurrenciesWithDescriptions;
 import static ru.alexander.convertio.test.helper.TestHelper.randomCurrency;
@@ -30,8 +30,7 @@ class CurrenciesServiceImplTest {
     @Test
     @DisplayName("Context loads")
     void testContext() {
-        asList(service, currenciesSource)
-            .forEach(o -> assertThat(o, is(notNullValue())));
+        checkNotNull(service, currenciesSource);
     }
 
     @Test

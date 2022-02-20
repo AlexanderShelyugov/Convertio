@@ -17,10 +17,6 @@ import ru.alexander.convertio.http.client.HttpClientConfiguration;
 import ru.alexander.convertio.model.Money;
 
 import static java.time.LocalDateTime.now;
-import static java.util.Arrays.asList;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpMethod.GET;
@@ -31,6 +27,7 @@ import static org.springframework.test.web.client.MockRestServiceServer.createSe
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withStatus;
+import static ru.alexander.convertio.test.helper.TestHelper.checkNotNull;
 import static ru.alexander.convertio.test.helper.TestHelper.randomAmount;
 import static ru.alexander.convertio.test.helper.TestHelper.randomMoney;
 import static ru.alexander.convertio.test.helper.TestHelper.randomString;
@@ -57,8 +54,7 @@ class ConversionProviderTest {
     @Test
     @DisplayName("Context loads")
     void testContext() {
-        asList(provider, apiKeyVault, restTemplate, http)
-            .forEach(o -> assertThat(o, is(notNullValue())));
+        checkNotNull(provider, apiKeyVault, restTemplate, http);
     }
 
     @Test

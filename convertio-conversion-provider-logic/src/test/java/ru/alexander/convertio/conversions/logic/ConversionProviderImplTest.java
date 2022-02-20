@@ -11,13 +11,10 @@ import ru.alexander.convertio.conversions.api.ConversionProvider;
 import ru.alexander.convertio.conversions.api.model.MoneyConversion;
 import ru.alexander.convertio.conversions.source.api.ConversionSource;
 
-import static java.util.Arrays.asList;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
+import static ru.alexander.convertio.test.helper.TestHelper.checkNotNull;
 import static ru.alexander.convertio.test.helper.TestHelper.randomMoney;
 
 @SpringBootTest(classes = {ConversionProviderImpl.class})
@@ -32,8 +29,7 @@ class ConversionProviderImplTest {
     @Test
     @DisplayName("Context loads")
     void testContext() {
-        asList(provider, conversionSource)
-            .forEach(o -> assertThat(o, is(notNullValue())));
+        checkNotNull(provider, conversionSource);
     }
 
     @Test

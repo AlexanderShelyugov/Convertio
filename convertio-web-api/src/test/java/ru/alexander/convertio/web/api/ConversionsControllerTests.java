@@ -29,6 +29,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static ru.alexander.convertio.test.helper.TestHelper.checkNotNull;
 import static ru.alexander.convertio.test.helper.TestHelper.randomAmount;
 import static ru.alexander.convertio.test.helper.TestHelper.randomMoney;
 import static ru.alexander.convertio.test.helper.TestHelper.randomString;
@@ -58,8 +59,7 @@ class ConversionsControllerTests {
     @Test
     @DisplayName("Context loads successfully!")
     void contextLoads() {
-        asList(mockMvc, mapper, provider, currenciesService)
-            .forEach(o -> assertThat(o, is(notNullValue())));
+        checkNotNull(mockMvc, mapper, provider, currenciesService);
     }
 
     @Test

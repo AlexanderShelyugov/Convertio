@@ -8,14 +8,23 @@ import ru.alexander.convertio.model.Money;
 import java.util.Collection;
 import java.util.Map;
 
+import static java.util.Arrays.asList;
 import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toMap;
 import static java.util.stream.Collectors.toSet;
 import static java.util.stream.Stream.generate;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
 
 public final class TestHelper {
 
     public static final EasyRandom RANDOM = new EasyRandom();
+
+    public static void checkNotNull(Object... objects) {
+        asList(objects)
+            .forEach(o -> assertThat(o, is(notNullValue())));
+    }
 
     public static Money randomMoney() {
         return Money.builder()
