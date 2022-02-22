@@ -27,5 +27,5 @@ mvn clean package
 
 ## Run
 ```shell
-java $JAVA_OPTS -Dserver.port=$PORT -jar convertio-main/target/convertio.jar
+java -jar convertio-main/target/convertio.jar
 ```
