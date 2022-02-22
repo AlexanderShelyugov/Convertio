@@ -3,6 +3,7 @@ package ru.alexander.convertio.conversions.source.exchangeratesapi;
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -31,6 +32,7 @@ class CurrenciesProvider implements CurrenciesSource {
     }
 
     @Override
+    @Cacheable("currenciesWithDescription")
     public Map<String, String> currenciesWithDescription() {
         val response = http.getForEntity(supportedCurrenciesUrl(), JsonNode.class);
         if (!response.getStatusCode().is2xxSuccessful()) {

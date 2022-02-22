@@ -10,16 +10,21 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
+import ru.alexander.convertio.configuration.cache.CacheConfiguration;
 import ru.alexander.convertio.conversions.source.api.CurrenciesSource;
 import ru.alexander.convertio.http.client.HttpClientConfiguration;
 
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpStatus.OK;
@@ -34,13 +39,16 @@ import static ru.alexander.convertio.test.helper.TestHelper.randomCurrenciesWith
 import static ru.alexander.convertio.test.helper.TestHelper.randomString;
 
 @SpringBootTest(classes = {CurrenciesProvider.class})
-@Import(HttpClientConfiguration.class)
+@Import({HttpClientConfiguration.class, CacheConfiguration.class})
 class CurrenciesProviderTest {
     @Autowired
     private CurrenciesSource service;
 
     @Autowired
     private RestTemplate restTemplate;
+
+    @Autowired
+    private CacheManager cacheManager;
 
     @MockBean
     private ApiKeyVault apiKeyVault;
@@ -55,7 +63,7 @@ class CurrenciesProviderTest {
     @Test
     @DisplayName("Context loads")
     void testContext() {
-        checkNotNull(service, restTemplate, apiKeyVault, http);
+        checkNotNull(service, restTemplate, cacheManager, apiKeyVault, http);
     }
 
     @Test
