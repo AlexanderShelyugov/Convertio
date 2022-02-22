@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.alexander.convertio.conversions.api.CurrenciesService;
 
 import java.util.Map;
+import java.util.TreeMap;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.ResponseEntity.ok;
@@ -36,6 +37,6 @@ class CurrenciesController {
     @GetMapping
     ResponseEntity<?> getSupportedCurrencies() {
         val currencies = currenciesService.getAllSupportedCurrencies();
-        return ok(currencies);
+        return ok(new TreeMap<>(currencies));
     }
 }
