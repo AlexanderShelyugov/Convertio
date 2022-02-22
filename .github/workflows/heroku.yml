@@ -9,17 +9,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-      - name: Init secrets
-        run: |
-          git checkout -b heroku
-          API_KEY=convertio-conversion-source-exchangeratesapi/src/main/resources
-          echo ${{ secrets.EXCHANGE_RATES_API_KEY }} > $API_KEY/api.key
-          echo Yes, this is our api key
-          cat $API_KEY/.gitignore
-          git config user.name "GitHub Actions Bot"
-          git config user.email "<>"
-          git add -f $API_KEY/api.key
-          git commit -m "Secrets applied"
       - name: Deploy to Heroku
         uses: akhileshns/heroku-deploy@v3.12.12
         with:
