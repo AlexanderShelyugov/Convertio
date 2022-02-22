@@ -1,0 +1,39 @@
+get:
+  summary: Convert money to required currency
+  operationId: convertMoney
+  parameters:
+    - name: from
+      description: Source currency
+      in: path
+      required: true
+      schema:
+        type: string
+        minLength: 1
+    - name: to
+      description: Target currency
+      in: path
+      required: true
+      schema:
+        type: string
+        minLength: 1
+    - name: amount
+      description: The amount of money we have
+      in: path
+      required: true
+      schema:
+        type: number
+        format: double
+        minimum: 0
+  responses:
+    '200':
+      description: Conversion successful
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/conversion-result.yml'
+    '400':
+      description: Incorrect currencies or negative money amount
+      $ref: '../responses/bad-request.yml'
+    '404':
+      description: Conversion not found
+      $ref: '../responses/not-found.yml'

@@ -1,0 +1,5 @@
+description: All supported currencies with their descriptions
+type: object
+example:
+  EUR: Euro
+  USD: Us Dollar

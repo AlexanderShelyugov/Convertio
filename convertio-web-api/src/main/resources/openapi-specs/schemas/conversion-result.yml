@@ -1,0 +1,23 @@
+description: Conversion result
+type: object
+properties:
+  sourceCurrency:
+    type: string
+  sourceAmount:
+    type: number
+    format: double
+  targetCurrency:
+    type: string
+  targetAmount:
+    type: number
+    format: double
+required:
+  - sourceCurrency
+  - sourceAmount
+  - targetCurrency
+  - targetAmount
+example:
+  sourceCurrency: USD
+  targetCurrency: EUR
+  sourceAmount: 20
+  targetAmount: 30

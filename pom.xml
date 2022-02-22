@@ -32,6 +32,7 @@
         <version.easy-random>5.0.0</version.easy-random>
         <version.lombok>1.18.22</version.lombok>
         <version.openapi>1.6.6</version.openapi>
+        <version.openapi.generator>5.4.0</version.openapi.generator>
         <version.spring>2.6.3</version.spring>
         <version.validator>7.0.2.Final</version.validator>
         <version.caffeine>3.0.5</version.caffeine>

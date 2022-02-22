@@ -1,0 +1,10 @@
+get:
+  summary: Get all supported currencies and their descriptions
+  operationId: getSupportedCurrencies
+  responses:
+    '200':
+      description: Retrieval successful
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/currencies-info.yml'

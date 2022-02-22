@@ -1,0 +1,10 @@
+openapi: "3.0.0"
+info:
+  description: "Currencies and conversions server"
+  title: Currencies service
+  version: 1.0.0
+paths:
+  /currencies:
+    $ref: './paths/currencies.yml'
+  /conversions/{from}/{to}/{amount}:
+    $ref: './paths/conversions.yml'

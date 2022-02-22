@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import ru.alexander.convertio.conversions.api.ConversionProvider;
 import ru.alexander.convertio.conversions.api.CurrenciesService;
 import ru.alexander.convertio.conversions.api.model.MoneyConversion;
+import ru.alexander.convertio.web.api.model.ConversionResult;
 
 import static java.util.Arrays.asList;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -31,6 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.alexander.convertio.test.helper.TestHelper.checkNotNull;
 import static ru.alexander.convertio.test.helper.TestHelper.randomAmount;
+import static ru.alexander.convertio.test.helper.TestHelper.randomCurrency;
 import static ru.alexander.convertio.test.helper.TestHelper.randomMoney;
 import static ru.alexander.convertio.test.helper.TestHelper.randomString;
 
@@ -84,12 +86,11 @@ class ConversionsControllerTests {
         val actual = extractFrom(r);
         assertThat(actual, is(notNullValue()));
 
-        val expected = ConversionResult.builder()
+        val expected = new ConversionResult()
             .sourceCurrency(from.getCurrency())
             .sourceAmount(from.getAmount().doubleValue())
             .targetCurrency(to.getCurrency())
-            .targetAmount(to.getAmount().doubleValue())
-            .build();
+            .targetAmount(to.getAmount().doubleValue());
         assertEquals(expected, actual);
     }
 
@@ -97,7 +98,7 @@ class ConversionsControllerTests {
     @DisplayName("Request with unsupported currencies is bad")
     void unsupportedCurrrenciesAreDeclined() throws Exception {
         val from = randomMoney();
-        val toCurrency = randomString();
+        val toCurrency = randomCurrency();
 
         when(currenciesService.isCurrencySupported(from.getCurrency()))
             .thenReturn(false);
@@ -120,14 +121,14 @@ class ConversionsControllerTests {
     void negativeAmountIsDeclined() throws Exception {
         val amount = -1 * randomAmount();
         assertTrue(amount < 0);
-        expectBadRequest(randomString(), randomString(), amount);
+        expectBadRequest(randomCurrency(), randomCurrency(), amount);
     }
 
     @Test
     @DisplayName("Requests with blank currencies are bad")
     void blankCurrenciesAreDeclined() throws Exception {
         val amount = randomAmount();
-        val normalCurrency = randomString();
+        val normalCurrency = randomCurrency();
         val blankCurrencies = asList(null, "    ");
         for (val blankCurrency : blankCurrencies) {
             expectBadRequest(blankCurrency, normalCurrency, amount);
@@ -152,11 +153,13 @@ class ConversionsControllerTests {
     }
 
     private void expectBadRequest(String a, String b, Number amount) throws Exception {
-        convert(a, b, amount).andExpect(status().isBadRequest());
+        convert(a, b, amount)
+            .andExpect(status().isBadRequest());
     }
 
     private void expectNotFound(String a, String b, Number amount) throws Exception {
-        convert(a, b, amount).andExpect(status().isNotFound());
+        convert(a, b, amount)
+            .andExpect(status().isNotFound());
     }
 
     private static String conversionURI(String sCurrency, String tCurrency, Number sAmount) {
