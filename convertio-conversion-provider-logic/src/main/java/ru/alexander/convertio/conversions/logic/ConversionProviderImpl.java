@@ -1,6 +1,7 @@
 package ru.alexander.convertio.conversions.logic;
 
 import lombok.RequiredArgsConstructor;
+import lombok.val;
 import org.springframework.stereotype.Service;
 import ru.alexander.convertio.conversions.api.ConversionFailedException;
 import ru.alexander.convertio.conversions.api.ConversionProvider;
@@ -20,7 +21,10 @@ class ConversionProviderImpl implements ConversionProvider {
         throws ConversionFailedException {
         Money target;
         try {
-            target = requireNonNull(conversionSource.convert(source, targetCurrency));
+            val formattedSource = Money.builder().currency(source.getCurrency().toUpperCase())
+                .amount(source.getAmount()).build();
+            val formattedTarget = targetCurrency.toUpperCase();
+            target = requireNonNull(conversionSource.convert(formattedSource, formattedTarget));
         } catch (Exception e) {
             throw new ConversionFailedException(e.getMessage(), e);
         }

@@ -28,7 +28,7 @@ public final class TestHelper {
 
     public static Money randomMoney() {
         return Money.builder()
-            .currency(randomString())
+            .currency(randomCurrency())
             .amount(randomAmount())
             .build();
     }
@@ -52,7 +52,7 @@ public final class TestHelper {
     }
 
     public static String randomCurrency() {
-        return randomString();
+        return randomString().toUpperCase();
     }
 
     public static String randomString() {
