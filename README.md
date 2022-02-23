@@ -19,7 +19,12 @@ You can also use available [actuators](https://alexander-shelyugov-convertio.her
 
 ## Health
 ![Deploy to Heroku](https://github.com/AlexanderShelyugov/Convertio/actions/workflows/heroku.yml/badge.svg)
+
 ![Tests](https://github.com/AlexanderShelyugov/Convertio/actions/workflows/tests.yml/badge.svg)
+
+![Health](https://img.shields.io/website?label=App%20on%20Heroku&url=https%3A%2F%2Falexander-shelyugov-convertio.herokuapp.com%2Factuator%2Fhealth)
+
+
 
 ## Build
 
