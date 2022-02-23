@@ -3,10 +3,10 @@
 Web service that uses [exchangeratesapi.io](https://exchangeratesapi.io) to convert money amounts between currencies.
 
 ## Table of contents
-[Usage](#Usage)
-[Health](#Health)
-[Build](#Build)
-[Run](#Run)
+- [Usage](#Usage)
+- [Health](#Health)
+- [Build](#Build)
+- [Run](#Run)
 
 ## Usage
 Visit [documentation page](https://alexander-shelyugov-convertio.herokuapp.com/docs) to look at possible endpoints.
