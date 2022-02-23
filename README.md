@@ -2,6 +2,12 @@
 
 Web service that uses [exchangeratesapi.io](https://exchangeratesapi.io) to convert money amounts between currencies.
 
+## Table of contents
+[Usage](#Usage)
+[Health](#Health)
+[Build](#Build)
+[Run](#Run)
+
 ## Usage
 Visit [documentation page](https://alexander-shelyugov-convertio.herokuapp.com/docs) to look at possible endpoints.
 
@@ -18,19 +24,20 @@ You can also use available [actuators](https://alexander-shelyugov-convertio.her
 ## Build
 
 ### Maven
-
-Just build it as a maven project
-
 ```shell
 mvn clean package
 ```
-
 ### Docker
 ```shell
 docker build -t convertio .
 ```
 
 ## Run
+### Execute Jar
 ```shell
 java -jar convertio-main/target/convertio.jar
+```
+### Run Docker container
+```shell
+docker run --rm -p 8080:8080 convertio
 ```
