@@ -2,9 +2,12 @@
 
 Web service that uses [exchangeratesapi.io](https://exchangeratesapi.io) to convert money amounts between currencies.
 
+![Deploy to Heroku](https://github.com/AlexanderShelyugov/Convertio/actions/workflows/heroku.yml/badge.svg)
+![Tests](https://github.com/AlexanderShelyugov/Convertio/actions/workflows/tests.yml/badge.svg)
+![Health](https://img.shields.io/website?label=App%20on%20Heroku&url=https%3A%2F%2Falexander-shelyugov-convertio.herokuapp.com%2Factuator%2Fhealth)
+
 ## Table of contents
 - [Usage](#Usage)
-- [Health](#Health)
 - [Build](#Build)
 - [Run](#Run)
 
@@ -17,17 +20,7 @@ Check ones that you need and call [/conversions/{from}/{to}/{amount}](https://al
 
 You can also use available [actuators](https://alexander-shelyugov-convertio.herokuapp.com/actuator).
 
-## Health
-![Deploy to Heroku](https://github.com/AlexanderShelyugov/Convertio/actions/workflows/heroku.yml/badge.svg)
-
-![Tests](https://github.com/AlexanderShelyugov/Convertio/actions/workflows/tests.yml/badge.svg)
-
-![Health](https://img.shields.io/website?label=App%20on%20Heroku&url=https%3A%2F%2Falexander-shelyugov-convertio.herokuapp.com%2Factuator%2Fhealth)
-
-
-
 ## Build
-
 ### Maven
 ```shell
 mvn clean package
