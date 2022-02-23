@@ -25,6 +25,11 @@ Just build it as a maven project
 mvn clean package
 ```
 
+### Docker
+```shell
+docker build -t convertio .
+```
+
 ## Run
 ```shell
 java -jar convertio-main/target/convertio.jar
