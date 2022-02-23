@@ -3,3 +3,5 @@ content:
   application/json:
     schema:
       $ref: '../schemas/error.yml'
+    example:
+      message: Bad request

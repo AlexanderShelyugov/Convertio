@@ -9,6 +9,7 @@ get:
       schema:
         type: string
         minLength: 1
+        example: USD
     - name: to
       description: Target currency
       in: path
@@ -16,6 +17,7 @@ get:
       schema:
         type: string
         minLength: 1
+        example: EUR
     - name: amount
       description: The amount of money we have
       in: path
@@ -24,6 +26,7 @@ get:
         type: number
         format: double
         minimum: 0
+        example: 100
   responses:
     '200':
       description: Conversion successful
@@ -31,6 +34,12 @@ get:
         application/json:
           schema:
             $ref: '../schemas/conversion-result.yml'
+          examples:
+            Result:
+              sourceCurrency: USD
+              targetCurrency: EUR
+              sourceAmount: 20
+              targetAmount: 30
     '400':
       description: Incorrect currencies or negative money amount
       $ref: '../responses/bad-request.yml'
