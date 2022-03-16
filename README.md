@@ -2,6 +2,12 @@
 
 Web service that uses [exchangeratesapi.io](https://exchangeratesapi.io) to convert money amounts between currencies.
 
+## Unfortunately, because of sanctions, I can't make a monthly payment to exchangeratesapi.io. Therefore my account there is suspended.
+
+## However, if you clone this repo and replace [ApiKeyVault.API_KEY](convertio-conversion-source-exchangeratesapi/src/main/java/ru/alexander/convertio/conversions/source/exchangeratesapi/ApiKeyVault.java) with yours, this program will work.
+
+Anyway, you can examine effort, code and look at swagger :)
+
 ![Deploy to Heroku](https://github.com/AlexanderShelyugov/Convertio/actions/workflows/heroku.yml/badge.svg)
 ![Tests](https://github.com/AlexanderShelyugov/Convertio/actions/workflows/tests.yml/badge.svg)
 ![Health](https://img.shields.io/website?label=App%20on%20Heroku&url=https%3A%2F%2Falexander-shelyugov-convertio.herokuapp.com%2Factuator%2Fhealth)
