@@ -1,8 +1,9 @@
 name: Deploy to Heroku
 on:
-  push:
-    branches:
-      - main
+  workflow_run:
+    workflows: [Tests pass]
+    types:
+      - completed
 jobs:
   heroku-deploy:
     runs-on: ubuntu-latest
