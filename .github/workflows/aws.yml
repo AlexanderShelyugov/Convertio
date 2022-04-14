@@ -10,25 +10,23 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - name: Add SSH key
-        env:
-          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
-          SSH_HOME: /home/runner/.ssh
-          SSH_KEY_LOCATION: /home/runner/codecommit_key
-          SSH_KEY_AWS: ${{ secrets.AWS_CODECOMMIT_SSH_KEY }}
-          AWS_REPO_URL: ${{ secrets.AWS_REPO_URL }}
-        run: |
-          mkdir -p $SSH_HOME
-          ssh-keyscan git-codecommit.us-east-1.amazonaws.com >> $SSH_HOME/known_hosts
-          echo "$SSH_KEY_AWS" > $SSH_KEY_LOCATION
-          chmod 600 $SSH_KEY_LOCATION
-          ssh-agent -a $SSH_AUTH_SOCK > /dev/null
-          ssh-add $SSH_KEY_LOCATION
 
-          git config --global user.email "convertio@github.com"
-          git config --global user.name "Convertio Github Pipeline"
-          git remote add aws_codecommit $AWS_REPO_URL
-          echo "Sending commits..."
-          git push -f aws_codecommit main
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build, tag, and push image to Amazon ECR
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: convertio
+          IMAGE_TAG: latest
+        run: |
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
