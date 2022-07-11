@@ -5,8 +5,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
 import org.springframework.retry.support.RetryTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -21,9 +19,8 @@ import java.util.Map;
 import static java.util.Collections.unmodifiableMap;
 import static java.util.Optional.ofNullable;
 import static org.springframework.http.HttpMethod.GET;
-import static ru.alexander.convertio.conversions.source.rapidapi.RapidApiVault.API_KEY;
-import static ru.alexander.convertio.conversions.source.rapidapi.RapidApiVault.HOST;
-import static ru.alexander.convertio.conversions.source.rapidapi.RetryHelper.runWithRetry;
+import static ru.alexander.convertio.conversions.source.rapidapi.RapidApiHelper.getRequest;
+import static ru.alexander.convertio.conversions.source.rapidapi.RapidApiHelper.runWithRetry;
 
 @Service
 @RequiredArgsConstructor
@@ -56,15 +53,6 @@ class CurrenciesProvider implements CurrenciesSource {
             })
             .orElseGet(Collections::emptyMap);
         return unmodifiableMap(supportedCurrencies);
-    }
-
-    private static HttpEntity<Void> getRequest() {
-        val headers = new HttpHeaders();
-        headers.set("X-Rapidapi-Key", API_KEY);
-        headers.set("X-Rapidapi-Host", HOST);
-        headers.set("Host", HOST);
-
-        return new HttpEntity<>(null, headers);
     }
 
     private static String getListUrl() {

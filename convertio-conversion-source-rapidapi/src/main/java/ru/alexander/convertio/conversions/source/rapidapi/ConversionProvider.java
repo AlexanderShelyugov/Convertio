@@ -1,11 +1,8 @@
 package ru.alexander.convertio.conversions.source.rapidapi;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
 import org.springframework.retry.support.RetryTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
@@ -16,9 +13,8 @@ import ru.alexander.convertio.model.Money;
 
 import static java.util.Optional.ofNullable;
 import static org.springframework.http.HttpMethod.GET;
-import static ru.alexander.convertio.conversions.source.rapidapi.RapidApiVault.API_KEY;
-import static ru.alexander.convertio.conversions.source.rapidapi.RapidApiVault.HOST;
-import static ru.alexander.convertio.conversions.source.rapidapi.RetryHelper.runWithRetry;
+import static ru.alexander.convertio.conversions.source.rapidapi.RapidApiHelper.getRequest;
+import static ru.alexander.convertio.conversions.source.rapidapi.RapidApiHelper.runWithRetry;
 
 @Service
 @RequiredArgsConstructor
@@ -27,7 +23,6 @@ class ConversionProvider implements ConversionSource {
         "We've received code %s from conversion web service";
 
     private final RestTemplate http;
-    private final ObjectMapper mapper;
     private final RetryTemplate retry;
 
     @Override
@@ -37,35 +32,18 @@ class ConversionProvider implements ConversionSource {
 
     private Money tryToConvert(Money from, String targetCurrency) {
         val url = conversionUrl(from, targetCurrency);
-        val response = http.exchange(url, GET, getRequest(), String.class);
+        val response = http.exchange(url, GET, getRequest(), JsonNode.class);
         if (!response.getStatusCode().is2xxSuccessful()) {
             val msg = String.format(MSG_CONVERSION_HTTP_ERROR, response.getStatusCodeValue());
             throw new HttpClientErrorException(response.getStatusCode(), msg);
         }
-        Money target;
-        val json = ofNullable(response.getBody())
-            .map(content -> {
-                try {
-                    return mapper.readTree(content);
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            })
+        return ofNullable(response.getBody())
+            .map((json) -> json.get("rates"))
+            .map((rates) -> Money.builder()
+                .currency(rates.fieldNames().next())
+                .amount(rates.get(targetCurrency.toUpperCase()).get("rate_for_amount").asDouble())
+                .build())
             .orElseThrow(() -> new RuntimeException("Failed to retrieve conversion"));
-        val rates = json.get("rates");
-        target = Money.builder()
-            .currency(rates.fieldNames().next())
-            .amount(rates.get(targetCurrency.toUpperCase()).get("rate_for_amount").asDouble())
-            .build();
-        return target;
-    }
-
-    private static HttpEntity<Void> getRequest() {
-        val headers = new HttpHeaders();
-        headers.set("X-Rapidapi-Key", API_KEY);
-        headers.set("X-Rapidapi-Host", HOST);
-        headers.set("Host", HOST);
-        return new HttpEntity<>(null, headers);
     }
 
     private static String conversionUrl(Money from, String toCurrency) {
