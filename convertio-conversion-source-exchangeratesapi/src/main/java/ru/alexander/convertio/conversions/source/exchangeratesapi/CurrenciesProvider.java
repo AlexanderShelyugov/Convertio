@@ -3,8 +3,6 @@ package ru.alexander.convertio.conversions.source.exchangeratesapi;
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import ru.alexander.convertio.conversions.source.api.CurrenciesSource;
@@ -17,8 +15,8 @@ import java.util.Map;
 import static java.util.Collections.unmodifiableMap;
 import static java.util.Optional.ofNullable;
 
-@Service
 @RequiredArgsConstructor
+@Deprecated
 class CurrenciesProvider implements CurrenciesSource {
     private static final String MSG_CURRENCY_CHECK_HTTP_ERROR = "Currency check failed. " +
         "We've received code %s from conversion web service";
@@ -32,7 +30,6 @@ class CurrenciesProvider implements CurrenciesSource {
     }
 
     @Override
-    @Cacheable("currenciesWithDescription")
     public Map<String, String> currenciesWithDescription() {
         val response = http.getForEntity(supportedCurrenciesUrl(), JsonNode.class);
         if (!response.getStatusCode().is2xxSuccessful()) {

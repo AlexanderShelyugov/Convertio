@@ -27,7 +27,7 @@
         </dependency>
         <dependency>
             <groupId>ru.alexander.convertio</groupId>
-            <artifactId>convertio-conversion-source-exchangeratesapi</artifactId>
+            <artifactId>convertio-conversion-source-rapidapi</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

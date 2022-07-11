@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
-import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -13,7 +12,7 @@ import ru.alexander.convertio.model.Money;
 
 import static java.util.Optional.ofNullable;
 
-@Service
+@Deprecated
 @RequiredArgsConstructor
 class ConversionProvider implements ConversionSource {
     private static final String MSG_CONVERSION_HTTP_ERROR = "Conversion failed. " +
