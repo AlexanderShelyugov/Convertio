@@ -11,7 +11,8 @@ Anyway, you can examine effort, code and look at swagger :)
 ![Deploy to Heroku](https://github.com/AlexanderShelyugov/Convertio/actions/workflows/heroku.yml/badge.svg)
 ![Tests](https://github.com/AlexanderShelyugov/Convertio/actions/workflows/tests.yml/badge.svg)
 ![Health-Heroku](https://img.shields.io/website?label=App%20on%20Heroku&url=https%3A%2F%2Falexander-shelyugov-convertio.herokuapp.com%2Factuator%2Fhealth)
-![Health-AWS](https://img.shields.io/website?label=App%20on%20AWS&url=http%3A%2F%2Fconvertio-env.eba-6e8nxdry.us-east-1.elasticbeanstalk.com%2Factuator%2Fhealth)
+
+[//]: # (![Health-AWS]&#40;https://img.shields.io/website?label=App%20on%20AWS&url=http%3A%2F%2Fconvertio-env.eba-6e8nxdry.us-east-1.elasticbeanstalk.com%2Factuator%2Fhealth&#41;)
 
 ## Table of contents
 - [Usage](#Usage)
