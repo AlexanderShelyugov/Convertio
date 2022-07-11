@@ -21,6 +21,7 @@ import static java.util.Optional.ofNullable;
 import static org.springframework.http.HttpMethod.GET;
 import static ru.alexander.convertio.conversions.source.rapidapi.RapidApiHelper.getRequest;
 import static ru.alexander.convertio.conversions.source.rapidapi.RapidApiHelper.runWithRetry;
+import static ru.alexander.convertio.conversions.source.rapidapi.RapidApiVault.RAPID_API_HOST;
 
 @Service
 @RequiredArgsConstructor
@@ -58,7 +59,7 @@ class CurrenciesProvider implements CurrenciesSource {
     private static String getListUrl() {
         return UriComponentsBuilder.newInstance()
             .scheme("https")
-            .host("currency-converter5.p.rapidapi.com")
+            .host(RAPID_API_HOST)
             .path("/currency/list")
             .build()
             .toUriString();

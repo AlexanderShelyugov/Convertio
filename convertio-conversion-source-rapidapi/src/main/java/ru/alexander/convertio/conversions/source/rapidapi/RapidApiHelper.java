@@ -8,8 +8,7 @@ import org.springframework.retry.support.RetryTemplate;
 
 import java.util.function.Supplier;
 
-import static ru.alexander.convertio.conversions.source.rapidapi.RapidApiVault.API_KEY;
-import static ru.alexander.convertio.conversions.source.rapidapi.RapidApiVault.HOST;
+import static ru.alexander.convertio.conversions.source.rapidapi.RapidApiVault.*;
 
 public class RapidApiHelper {
     static <T> T runWithRetry(RetryTemplate retry, Supplier<T> action) {
@@ -22,9 +21,9 @@ public class RapidApiHelper {
 
     static HttpEntity<Void> getRequest() {
         val headers = new HttpHeaders();
-        headers.set("X-Rapidapi-Key", API_KEY);
-        headers.set("X-Rapidapi-Host", HOST);
-        headers.set("Host", HOST);
+        headers.set(API_KEY_HEADER, API_KEY);
+        headers.set(RAPID_API_HOST_HEADER, RAPID_API_HOST);
+        headers.set(HOST_HEADER, RAPID_API_HOST);
         return new HttpEntity<>(null, headers);
     }
 
